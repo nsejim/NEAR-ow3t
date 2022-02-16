@@ -1,170 +1,111 @@
-# `near-sdk-as` Starter Kit
+# OW3-T (Open Web 3 Tree)
 
-This is a good project to use as a starting point for your AssemblyScript project.
+A smart contrat to support real-life contexts organised in a tree hierarchy.
 
-## Samples
+## Examples of real-life use cases
 
-This repository includes a complete project structure for AssemblyScript contracts targeting the NEAR platform.
+### Large-scale service/product delivery
 
-The example here is very basic.  It's a simple contract demonstrating the following concepts:
-- a single contract
-- the difference between `view` vs. `change` methods
-- basic contract storage
+Think about large-scale operational context that naturally requires to be organised into multi-level of delegation (outsourcing). To give some examples:
+- Periodically export 10,000 tons of coffee from East Africa to Europe
+- Deploy and maintain billion of air quality sensors evenly deployed in all parts of the world.
+### Data aggregation in networked systems
 
-There are 2 AssemblyScript contracts in this project, each in their own folder:
+Most of the (wireless) communication networks are organised in a networking topology based on a tree hiearchy. 
 
-- **simple** in the `src/simple` folder
-- **singleton** in the `src/singleton` folder
+One particular case that is interesting to integrated Blockchain and AI is to federate the learning of isolated AI clients which are constrained to keep their data locally (for privacy reasons) while still collaborating to provide an aggregate business value. 
 
-### Simple
+- [Privacy-Preserving Blockchain-Based Federated Learning for IoT Devices](https://www.researchgate.net/publication/343732662_Privacy-Preserving_Blockchain-Based_Federated_Learning_for_IoT_Devices) 
 
-We say that an AssemblyScript contract is written in the "simple style" when the `index.ts` file (the contract entry point) includes a series of exported functions.
+- [Integration of blockchain and federated learning for Internet of Things: Recent advances and future challenges](https://www.sciencedirect.com/science/article/pii/S0167404821001796)
 
-In this case, all exported functions become public contract methods.
+## Installation
 
-```ts
-// return the string 'hello world'
-export function helloWorld(): string {}
+1. clone this repo
+2. run `yarn install` (or `npm install`)
+3. run `yarn build` (or `npm run build`)
+4. run `yarn test` (or `npm run test`)
+5. the contract source code is in `src/`
 
-// read the given key from account (contract) storage
-export function read(key: string): string {}
+The code source documentation is available in [docs](./docs)
 
-// write the given value at the given key to account (contract) storage
-export function write(key: string, value: string): string {}
+## Commands
 
-// private helper method used by read() and write() above
-private storageReport(): string {}
-```
-
-### Singleton
-
-We say that an AssemblyScript contract is written in the "singleton style" when the `index.ts` file (the contract entry point) has a single exported class (the name of the class doesn't matter) that is decorated with `@nearBindgen`.
-
-In this case, all methods on the class become public contract methods unless marked `private`.  Also, all instance variables are stored as a serialized instance of the class under a special storage key named `STATE`.  AssemblyScript uses JSON for storage serialization (as opposed to Rust contracts which use a custom binary serialization format called borsh).
-
-```ts
-@nearBindgen
-export class Contract {
-
-  // return the string 'hello world'
-  helloWorld(): string {}
-
-  // read the given key from account (contract) storage
-  read(key: string): string {}
-
-  // write the given value at the given key to account (contract) storage
-  @mutateState()
-  write(key: string, value: string): string {}
-
-  // private helper method used by read() and write() above
-  private storageReport(): string {}
-}
-```
-
-
-## Usage
-
-### Getting started
-
-(see below for video recordings of each of the following steps)
-
-INSTALL `NEAR CLI` first like this: `npm i -g near-cli`
-
-1. clone this repo to a local folder
-2. run `yarn`
-3. run `./scripts/1.dev-deploy.sh`
-3. run `./scripts/2.use-contract.sh`
-4. run `./scripts/2.use-contract.sh` (yes, run it to see changes)
-5. run `./scripts/3.cleanup.sh`
-
-### Videos
-
-**`1.dev-deploy.sh`**
-
-This video shows the build and deployment of the contract.
-
-[![asciicast](https://asciinema.org/a/409575.svg)](https://asciinema.org/a/409575)
-
-**`2.use-contract.sh`**
-
-This video shows contract methods being called.  You should run the script twice to see the effect it has on contract state.
-
-[![asciicast](https://asciinema.org/a/409577.svg)](https://asciinema.org/a/409577)
-
-**`3.cleanup.sh`**
-
-This video shows the cleanup script running.  Make sure you add the `BENEFICIARY` environment variable. The script will remind you if you forget.
+near create-account "ow3t.nsejim.testnet" --masterAccount "nsejim.testnet"  --initialBalance 20
+near deploy "ow3t.nsejim.testnet" build/debug/tree.wasm
+near call "ow3t.nsejim.testnet" "createTree" '{"name": "HelloTree", "outcome": 10}' --accountId "nsejim.testnet"
+near view ow3t.nsejim.testnet getTrees '{"accountId": "nsejim.testnet"}' 
+near call ow3t.nsejim.testnet registerNode '{"treeId": "TREE-2048936065", "newNodeAccountId": "node1.nsejim.test", "description": "node1", "assignedOutcome": 5 }' --accountId "nsejim.testnet"
+near view ow3t.nsejim.testnet getTodoOutcomeToDelegate '{"treeId": "TREE-2048936065", "accountId": "nsejim.testnet"}'
+near call ow3t.nsejim.testnet updateCompletedOutcome '{"treeId": "TREE-2048936065", "outcome": 3 }' --accountId "nsejim.testnet"
+**Compile source to WebAssembly**
 
 ```sh
-export BENEFICIARY=<your-account-here>   # this account receives contract account balance
+yarn build                    # asb --target debug
+yarn build:release            # asb
 ```
 
-[![asciicast](https://asciinema.org/a/409580.svg)](https://asciinema.org/a/409580)
-
-### Other documentation
-
-- See `./scripts/README.md` for documentation about the scripts
-- Watch this video where Willem Wyndham walks us through refactoring a simple example of a NEAR smart contract written in AssemblyScript
-
-  https://youtu.be/QP7aveSqRPo
-
-  ```
-  There are 2 "styles" of implementing AssemblyScript NEAR contracts:
-  - the contract interface can either be a collection of exported functions
-  - or the contract interface can be the methods of a an exported class
-
-  We call the second style "Singleton" because there is only one instance of the class which is serialized to the blockchain storage.  Rust contracts written for NEAR do this by default with the contract struct.
-
-   0:00 noise (to cut)
-   0:10 Welcome
-   0:59 Create project starting with "npm init"
-   2:20 Customize the project for AssemblyScript development
-   9:25 Import the Counter example and get unit tests passing
-  18:30 Adapt the Counter example to a Singleton style contract
-  21:49 Refactoring unit tests to access the new methods
-  24:45 Review and summary
-  ```
-
-## The file system
+**Run unit tests**
 
 ```sh
-├── README.md                          # this file
-├── as-pect.config.js                  # configuration for as-pect (AssemblyScript unit testing)
-├── asconfig.json                      # configuration for AssemblyScript compiler (supports multiple contracts)
-├── package.json                       # NodeJS project manifest
-├── scripts
-│   ├── 1.dev-deploy.sh                # helper: build and deploy contracts
-│   ├── 2.use-contract.sh              # helper: call methods on ContractPromise
-│   ├── 3.cleanup.sh                   # helper: delete build and deploy artifacts
-│   └── README.md                      # documentation for helper scripts
-├── src
-│   ├── as_types.d.ts                  # AssemblyScript headers for type hints
-│   ├── simple                         # Contract 1: "Simple example"
-│   │   ├── __tests__
-│   │   │   ├── as-pect.d.ts           # as-pect unit testing headers for type hints
-│   │   │   └── index.unit.spec.ts     # unit tests for contract 1
-│   │   ├── asconfig.json              # configuration for AssemblyScript compiler (one per contract)
-│   │   └── assembly
-│   │       └── index.ts               # contract code for contract 1
-│   ├── singleton                      # Contract 2: "Singleton-style example"
-│   │   ├── __tests__
-│   │   │   ├── as-pect.d.ts           # as-pect unit testing headers for type hints
-│   │   │   └── index.unit.spec.ts     # unit tests for contract 2
-│   │   ├── asconfig.json              # configuration for AssemblyScript compiler (one per contract)
-│   │   └── assembly
-│   │       └── index.ts               # contract code for contract 2
-│   ├── tsconfig.json                  # Typescript configuration
-│   └── utils.ts                       # common contract utility functions
-└── yarn.lock                          # project manifest version lock
+yarn test:unit                # asp --verbose --nologo -f unit.spec
 ```
 
-You may clone this repo to get started OR create everything from scratch.
+**Run simulation tests**
 
-Please note that, in order to create the AssemblyScript and tests folder structure, you may use the command `asp --init` which will create the following folders and files:
+These tests can be run from within VSCode (or any Rust-compatible IDE) or from the command line.
 
+
+```sh
+yarn test:simulate            # yarn build:release && cargo test -- --nocapture
 ```
-./assembly/
-./assembly/tests/
-./assembly/tests/example.spec.ts
-./assembly/tests/as-pect.d.ts
+
+**Run all tests**
+
+```sh
+yarn test                     # yarn test:unit && test:simulate
 ```
+
+**Run integration tests**
+
+## UI Wireframes
+
+**Homepage**
+
+![homepage](wireframes/homepage.png)
+
+**Create tree**
+
+![create-tree](wireframes/create-tree.png)
+
+**Tree page**
+
+![tree-page](wireframes/tree-page.png)
+
+**Node page**
+
+![node-page](wireframes/node-page.png)
+
+
+## File Structure (TODO)
+
+
+
+## Live DApps on NEAR testnet (DONE)
+
+This smart contract is deployed on TestNet with accountId "ow3t.nsejim.tesnet"
+
+## Future Development
+
+### From monolithic to microsmart-contracts
+
+The current version of the smart contract manages the contract of
+This means that the state storage
+
+Every tree should have its own accountId
+Every member should have its own
+
+
+## Key Contributors
+
+- [Jimmy NSENGA - @nsejim](https://github.com/nsejim)
