@@ -71,8 +71,6 @@ TODO
 
 <img src="wireframes/file-structure.png" width="300">
 
-<br/>
-
 ## Future Works
 
 
