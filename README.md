@@ -79,12 +79,10 @@ yarn test:unit                # asp --verbose --nologo -f unit.spec
 
 ## Future Works
 
-
-
 ### Smart contract clients
 
 - Frontend Proof of Concept Development
-### Scaling the smart contract
+### Scaling the smart contract (Support Cross-contract calls)
 
 Update the smart contract to:
 - Deploy a new contract for each tree. This will enable the tree's owner to be responsible of the storage staking of the tree data 

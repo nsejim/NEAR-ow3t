@@ -36,9 +36,9 @@ The following process can be explored at [https://explorer.testnet.near.org/acco
 
 ## Each node update its completed outcome
 
-./scripts/5.update-completed-outcome.sh "nsejim.testnet"  "TREE-3707919279" 5
-./scripts/5.update-completed-outcome.sh "node2.nsejim.testnet"  "TREE-3707919279" 20
-./scripts/5.update-completed-outcome.sh "node1.nsejim.testnet"  "TREE-3707919279" 10 
+./scripts/5.update-completed-outcome.sh "nsejim.testnet"  "TREE-3707919279" 5  <br/>
+./scripts/5.update-completed-outcome.sh "node2.nsejim.testnet"  "TREE-3707919279" 20 <br/>
+./scripts/5.update-completed-outcome.sh "node1.nsejim.testnet"  "TREE-3707919279" 10  <br/>
 
 ## Get report
 
