@@ -40,9 +40,15 @@ yarn build:release            # asb
 yarn test:unit                # asp --verbose --nologo -f unit.spec
 ```
 
-**Integration tests**
+**Integration script tests**
 
-TODO
+[Here](scripts/README.md) you find a README explaining how to use different integration scripts for the following tasks:
+
+- Deploy the OW3T contract
+- Create a tree
+- Register nodes
+- Update outcome achievements of each node
+- Generating a report for a given node.
 ## UI Wireframes
 
 **Homepage**
