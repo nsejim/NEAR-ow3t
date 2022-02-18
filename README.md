@@ -75,7 +75,7 @@ yarn test:unit                # asp --verbose --nologo -f unit.spec
 
 ## File Structure
 
-<img src="wireframes/file-structure.png" width="300">
+<img src="wireframes/code-structure.png" width="300">
 
 ## Future Works
 
