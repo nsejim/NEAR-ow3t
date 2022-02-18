@@ -64,6 +64,7 @@ export function registerNode(treeId: TreeId, newNodeAccountId: AccountId, descri
   treeNodesMap.set(newNodeAccountId, new Node(description, assignedOutcome, depth))
   nodes.set(treeId, treeNodesMap);
   
+  logging.log(`Node ${newNodeAccountId} has been successfully registered in tree with ${treeId}`)
 }
 
 /**
@@ -82,6 +83,8 @@ export function updateCompletedOutcome(treeId: string, outcome: i32): void {
   senderNode.updateCompletedOutcome(outcome, todoOutcome);
   treeNodesMap.set(context.sender, senderNode)
   nodes.set(treeId, treeNodesMap);
+
+  logging.log(`Node ${context.sender} has been successfully updated its completed outcome`)
 }
 
 /**
