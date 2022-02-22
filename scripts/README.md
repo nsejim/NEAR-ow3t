@@ -9,7 +9,7 @@ The following process can be explored at [https://explorer.testnet.near.org/acco
 ## Deploy dev contract
 ./scripts/1.dev-deploy.sh 
 ## Create a tree
-./scripts/1.build-tree.sh "Hello Tree" 100 
+./scripts/2.build-tree.sh "Hello Tree" 100 
 
 ## List trees
 ./scripts/3.list-trees.sh  
